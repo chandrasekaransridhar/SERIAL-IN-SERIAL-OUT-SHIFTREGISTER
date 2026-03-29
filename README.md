@@ -1,8 +1,8 @@
-# 4-BIT-RIPPLE-COUNTER
+# SERIAL-IN-SERIAL-OUT-SHIFTREGISTER
 
 **AIM:**
 
-To implement  4 Bit Ripple Counter using verilog and validating their functionality using their functional tables
+To implement  SISO Shift Register using verilog and validating their functionality using their functional tables
 
 **SOFTWARE REQUIRED:**
 
@@ -10,88 +10,61 @@ Quartus prime
 
 **THEORY**
 
-**4 Bit Ripple Counter**
+**SISO shift Register**
 
-A binary ripple counter consists of a series connection of complementing flip-flops (T or JK type), with the output of each flip-flop connected to the Clock Pulse input of the next higher-order flip-flop. The flip-flop holding the least significant bit receives the incoming count pulses. The diagram of a 4-bit binary ripple counter is shown in Fig. below.
+A Serial-In Serial-Out shift register is a sequential logic circuit that allows data to be shifted in and out one bit at a time in a serial manner. It consists of a cascade of flip-flops connected in series, forming a chain. The input data is applied to the first flip-flop in the chain, and as the clock pulses, the data propagates through the flip-flops, ultimately appearing at the output.
 
-![image](https://github.com/naavaneetha/4-BIT-RIPPLE-COUNTER/assets/154305477/cb4b74d4-31ab-4359-95d0-d22e67daba13)
+The logic circuit provided below demonstrates a serial-in serial-out (SISO) shift register. It comprises four D flip-flops that are interconnected in a sequential manner. These flip-flops operate synchronously with one another, as they all receive the same clock signal.
 
-In timing diagram Q0 is changing as soon as the negative edge of clock pulse is encountered, Q1 is changing when negative edge of Q0 is encountered(because Q0 is like clock pulse for second flip flop) and so on.
+![image](https://github.com/naavaneetha/SERIAL-IN-SERIAL-OUT-SHIFTREGISTER/assets/154305477/e81c4072-37f9-46c6-8145-566764b74c3a)
 
-![image](https://github.com/naavaneetha/4-BIT-RIPPLE-COUNTER/assets/154305477/a573a7d6-014e-4e54-93e6-e2ac9530960b)
+Figure 01 4 Bit SISO Register
 
-![image](https://github.com/naavaneetha/4-BIT-RIPPLE-COUNTER/assets/154305477/85e1958a-2fc1-49bb-9a9f-d58ccbf3663c)
+The synchronous nature of the flip-flops ensures that the shifting of data occurs in a coordinated manner. When the clock signal rises, the input data is sampled and stored in the first flip-flop. On subsequent clock pulses, the stored data propagates through the flip-flops, moving from one flip-flop to the next.
+Each D flip-flop in the circuit has a Data (D) input, a Clock (CLK) input, and an output (Q). The D input represents the data to be loaded into the flip-flop, while the CLK input is connected to the common clock signal. The output (Q) of each flip-flop is connected to the D input of the next flip-flop, forming a cascade.
 
 **Procedure**
+1.Declare a Verilog module named EXP11 with input ports clk, rst, sin, and an output port q.
 
-1.Increment count on each positive edge of the clock. 
+2.Declare input ports: clk for the clock signal, rst for the reset signal, and sin for the input signal. Also, declare the output port q as a 4-bit vector representing the state of flip-flops.
 
-2.Reset count to zero when it reaches 15. 
+3.Declare an internal register q as a 4-bit vector to store the state of the flip-flops.
 
-3.Generate clock signal (clk). 
+4.Create an always block that triggers on the positive edge of both the clock (clk) and the reset signal (rst), containing the following steps:
 
-4.Instantiate the RippleCounter module. 
+5.If the reset signal is asserted (rst), assign q to 4'b0000 to reset all flip-flops to 0.
 
-5.Conduct functional testing by displaying the count at each clock cycle for 16 cycles.
+6.If the reset signal is not asserted, assign the value of sin to the first flip-flop (q[0]) and shift the values of q to the right.
 
 **PROGRAM**
+
+/* Program for flipflops and verify its truth table in quartus using Verilog programming.
+
+Developed by:sridhar c RegisterNumber:212225040425
 ~~~
-
-Program for 4 Bit Ripple Counter and verify its truth table in quartus using Verilog programming.
-
- Developed by:SRIDHAR C
- RegisterNumber:212225040425
-
-
-module bitripple(
-    input  wire clk,      
-    input  wire reset_n,  
-    output reg  [3:0] q   
-);
-
-
-    always @(negedge clk or negedge reset_n) begin
-        if (!reset_n)
-            q[0] <= 1'b0;
-        else
-            q[0] <= ~q[0];
-    end
-
-
-    always @(negedge q[0] or negedge reset_n) begin
-        if (!reset_n)
-            q[1] <= 1'b0;
-        else
-            q[1] <= ~q[1];
-    end
-
-
-    always @(negedge q[1] or negedge reset_n) begin
-        if (!reset_n)
-            q[2] <= 1'b0;
-        else
-            q[2] <= ~q[2];
-    end
-
-
-    always @(negedge q[2] or negedge reset_n) begin
-        if (!reset_n)
-            q[3] <= 1'b0;
-        else
-            q[3] <= ~q[3];
-    end
-
+module exp10(clk, sin, q);
+input clk;
+input sin;
+output [3:0] q;
+reg [3:0] q;
+always @(posedge clk)
+begin
+q[0] <= sin;
+q[1] <= q[0];
+q[2] <= q[1];
+q[3] <= q[2];
+end
 endmodule
 ~~~
 */
+**RTL LOGIC FOR SISO Shift Register**
 
-**RTL LOGIC FOR 4 Bit Ripple Counter**
+<img width="1251" height="762" alt="image" src="https://github.com/user-attachments/assets/c38889ff-0aef-4e0b-8608-c41c33b01893" />
 
-![WhatsApp Image 2026-03-10 at 9 18 49 PM](https://github.com/user-attachments/assets/7d100cdf-f5b2-430d-a6c7-3f2470ebc9f2)
 
-**TIMING DIGRAMS FOR 4 Bit Ripple Counter**
+**TIMING DIGRAMS FOR SISO Shift Register**
+<img width="1588" height="846" alt="image" src="https://github.com/user-attachments/assets/875c3a02-9313-4d92-8108-7955c2caa785" />
 
-![WhatsApp Image 2026-03-10 at 9 21 01 PM](https://github.com/user-attachments/assets/0e203d2c-a254-451c-adcc-6f1678e7f8e2)
 
 **RESULTS**
-Thus the program executed succesfully
+Thus,SISO Shift Register using verilog and validating their functionality using their functional tables has successful execution of the program.
